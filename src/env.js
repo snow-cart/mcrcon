@@ -7,6 +7,10 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+	MC_LOGS_PATH: z.string(),
+	MC_HOST: z.string(),
+	MC_RCON_PORT: z.string(),
+	MC_RCON_PASSWORD: z.string(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -40,6 +44,10 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+	MC_LOGS_PATH: process.env.MC_LOGS_PATH,
+	MC_HOST: process.env.MC_HOST,
+	MC_RCON_PORT: process.env.MC_RCON_PORT,
+	MC_RCON_PASSWORD: process.env.MC_RCON_PASSWORD,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,

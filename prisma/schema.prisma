@@ -63,6 +63,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    isAdmin       Boolean   @default(false)
 }
 
 model VerificationToken {

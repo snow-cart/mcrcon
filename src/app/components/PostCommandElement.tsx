@@ -5,38 +5,43 @@ import { useState } from "react";
 
 import { api } from "~/trpc/react";
 
-export function CreatePost() {
+export function PostCommandElement() {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const [command, setCommand] = useState("");
 
-  const createPost = api.post.create.useMutation({
+  const postCmd = api.rcon.postCmd.useMutation({
     onSuccess: () => {
       router.refresh();
-      setName("");
+      setCommand("");
     },
+	onError: (error)  => {
+	  console.log(error);
+	  router.refresh();
+	  setCommand("error");
+	}
   });
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        createPost.mutate({ name });
+        postCmd.mutate({ command });
       }}
       className="flex flex-col gap-2"
     >
       <input
         type="text"
-        placeholder="Title"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full rounded-full px-4 py-2 text-black"
+        placeholder="say Hello, World!"
+        value={command}
+        onChange={(e) => setCommand(e.target.value)}
+        className="w-full rounded-full px-4 py-2 text-black bg-white"
       />
       <button
         type="submit"
         className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-        disabled={createPost.isPending}
+        disabled={postCmd.isPending}
       >
-        {createPost.isPending ? "Submitting..." : "Submit"}
+        {postCmd.isPending ? "Sending..." : "Send"}
       </button>
     </form>
   );
