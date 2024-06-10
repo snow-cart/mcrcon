@@ -21,6 +21,9 @@ next-env.d.ts
 # production
 /build
 
+# development
+**/dev-old*
+
 # misc
 .DS_Store
 *.pem
