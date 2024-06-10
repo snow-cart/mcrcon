@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { getServerAuthSession } from "../../server/auth";
 import { getAdminStatus } from "../../util";
 import { api } from "~/trpc/server";
@@ -10,7 +8,7 @@ export async function Console() {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
             {await getAdminStatus( session?.user.id ? session?.user.id : "" )
 				? <>
 					<Logs />
@@ -31,8 +29,10 @@ export async function Logs () {
 	logs = await api.rcon.getLogs();
   }
   return (
-  	<div className="w-full whitespace-pre-wrap">
-		{logs ? logs : "Loading logs..."}
+	<div className="bg-gray-900 rounded-lg p-4 shadow-lg h-[80vh] overflow-y-scroll">
+		<div className="whitespace-pre-wrap text-white">
+			{logs ? logs : "Loading logs..."}
+		</div>
 	</div>
   );
 }
