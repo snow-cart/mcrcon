@@ -27,18 +27,18 @@ export function PostCommandElement() {
         e.preventDefault();
         postCmd.mutate({ command });
       }}
-      className="flex flex-col gap-2"
+      className="w-min h-min flex flex-row gap-0 rounded-full bg-white"
     >
       <input
         type="text"
         placeholder="say Hello, World!"
         value={command}
         onChange={(e) => setCommand(e.target.value)}
-        className="w-full rounded-full px-4 py-2 text-black bg-white"
+        className="w-full min-w-96  px-4 py-2 text-black bg-transparent"
       />
       <button
         type="submit"
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
+        className="rounded-full bg-white/10 px-5 py-3 my-1 mr-1 font-semibold transition hover:bg-black/80 bg-black"
         disabled={postCmd.isPending}
       >
         {postCmd.isPending ? "Sending..." : "Send"}

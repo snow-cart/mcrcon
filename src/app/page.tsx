@@ -1,40 +1,23 @@
 import Link from "next/link";
 
-import { PostCommandElement } from "./components";
+import { PostCommandElement, Header } from "./components";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { getAdminStatus } from "../util";
 import { env } from "../env";
 
 export default async function Home() {
-  // const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-top bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-center text-2xl text-white">
-              {session && <>
-			  	<span> Logged in as {session.user?.name}</span>  <br/>
-				{//if (env.NODE_ENV == "development" || env.NODE_ENV == "test") 
-					<span className="text-xs">UserId: {session.user?.id}</span>}
-			  </>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
-          </div>
-        </div>
+	<>
+	<Header/>
 
-        <Console />
-      </div>
-    </main>
+	<main className="flex flex-col items-left mx-8 my-5">
+		<Console/>
+	</main>
+
+	{/* <Footer/> */}
+	</>
   );
 }
 
@@ -42,15 +25,14 @@ async function Console() {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
 
-  let logs: string | undefined = "Loading logs...";
-  logs = await api.rcon.getLogs();
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full">
             {
 			await getAdminStatus( session?.user.id ? session?.user.id : "" )
 				? <>
-					{logs ? logs : "Loading logs..."} 
+					<Logs />
+					<div className="h-3"/>
 					<PostCommandElement />
 				  </>
 				: Unauthorised()
@@ -59,6 +41,19 @@ async function Console() {
     </div>
   );
 }
+
+async function Logs () {
+  let logs: string | undefined = "Loading logs...";
+  logs = await api.rcon.getLogs();
+  console.log(logs);
+  return (
+  	<div className="w-full whitespace-pre-wrap">
+		{logs ? logs : "Loading logs..."}
+	</div>
+  );
+}
+
+
 
 function Unauthorised () {
 	return (
