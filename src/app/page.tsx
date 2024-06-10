@@ -39,6 +39,7 @@ async function Logs () {
   let logs: string | undefined = "Loading logs...";
   logs = await api.rcon.getLogs();
   console.log(logs);
+  setTimeout(async () => {logs = await api.rcon.getLogs()}, 1000);
   return (
   	<div className="w-full whitespace-pre-wrap">
 		{logs ? logs : "Loading logs..."}
