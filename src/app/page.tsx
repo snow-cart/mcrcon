@@ -1,10 +1,8 @@
-import Link from "next/link";
-
-import { PostCommandElement, Header } from "./components";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { getAdminStatus } from "../util";
-import { env } from "../env";
+
+import { PostCommandElement, Header } from "./components";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -24,20 +22,15 @@ export default async function Home() {
 async function Console() {
   const session = await getServerAuthSession();
   if (!session?.user) return null;
-
-
   return (
     <div className="w-full">
-            {
-			await getAdminStatus( session?.user.id ? session?.user.id : "" )
+            {await getAdminStatus( session?.user.id ? session?.user.id : "" )
 				? <>
 					<Logs />
 					<div className="h-3"/>
 					<PostCommandElement />
 				  </>
-				: Unauthorised()
-			}
-      
+				: <Unauthorised />}
     </div>
   );
 }
@@ -52,8 +45,6 @@ async function Logs () {
 	</div>
   );
 }
-
-
 
 function Unauthorised () {
 	return (
