@@ -23,12 +23,12 @@ export async function Console() {
 }
 
 export async function Logs () {
-  const [logs, setLogs] = useState<string | undefined>('Loading logs...');
-  setLogs( await api.rcon.getLogs() );
+  let logs: string | undefined = "Loading logs...";
+  logs = await api.rcon.getLogs();
   console.log(logs);
   setTimeout(fetchLogs, 1000);
   async function fetchLogs() {
-	setLogs( await api.rcon.getLogs() );
+	logs = await api.rcon.getLogs();
   }
   return (
   	<div className="w-full whitespace-pre-wrap">
