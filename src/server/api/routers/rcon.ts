@@ -31,7 +31,7 @@ export const rconRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       if (await getAdminStatus(ctx.session.user.id)) {
         await rcon.connect();
-        rcon.send(input.command);
+        await rcon.send(input.command);
         rcon.end();
       }
     }),
